@@ -1,0 +1,10 @@
+outcome,outcome_name,stratification_outcome
+2,acute_myocardial_infarction,1
+12,hypotension,0
+18,stroke,1
+25,abnormal_weight_gain,0
+32,angioedema,0
+41,cough,0
+52,hospitalization_with_heart_failure,1
+54,hyperkalemia,0
+55,hypokalemia,0
