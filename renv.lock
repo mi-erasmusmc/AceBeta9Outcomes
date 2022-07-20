@@ -1,6 +1,6 @@
 {
   "R": {
-    "Version": "4.0.2",
+    "Version": "4.2.1",
     "Repositories": [
       {
         "Name": "CRAN",
@@ -299,7 +299,7 @@
       "RemoteRef": "main",
       "RemoteSha": "e09891853b4dc019501d7c595d46b2580a9df83d",
       "Remotes": "ohdsi/FeatureExtraction, ohdsi/Eunomia",
-      "Hash": "1138ac1ee3f128759625b43168dad911",
+      "Hash": "3ec8b0a7d820ebaedd68d4834f67b6a1",
       "Requirements": [
         "Cyclops",
         "DatabaseConnector",
@@ -447,9 +447,9 @@
       "RemoteHost": "api.github.com",
       "RemoteRepo": "RiskStratifiedEstimation",
       "RemoteUsername": "rekkasa",
-      "RemoteRef": "experimental",
-      "RemoteSha": "6797fc9601e51c00dde7d991031cdc5857a5f81b",
-      "Hash": "22e647dc640bf00dc1aa8770dd3e1946",
+      "RemoteRef": "existing_plp",
+      "RemoteSha": "eb1c27827201b479b51bc57132ccaaf593d0444c",
+      "Hash": "ba7535a96ff88bf9d3991b54f12a3bdd",
       "Requirements": [
         "CohortMethod",
         "Cyclops",

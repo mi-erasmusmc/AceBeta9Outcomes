@@ -1,10 +1,13 @@
 outcome,outcome_name,stratification_outcome
-2,acute_myocardial_infarction,1
-12,hypotension,0
-18,stroke,1
-25,abnormal_weight_gain,0
-32,angioedema,0
-41,cough,0
-52,hospitalization_with_heart_failure,1
-54,hyperkalemia,0
-55,hypokalemia,0
+2,Acute myocardial infarction,1
+9,Gastrointestinal bleeding,0
+11,Hyponatremia,0
+12,Hypotension,0
+18,Stroke,1
+28,Acute renal failure,0
+32,Angioedema,0
+39,Kidney disease,0
+41,Cough,0
+52,Hospitalization with heart failure,1
+54,Hyperkalemia,0
+55,Hypokalemia,0

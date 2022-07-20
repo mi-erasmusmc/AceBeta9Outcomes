@@ -14,7 +14,7 @@ generateAllCohorts <- function(
     cohortDatabaseSchema = cohortDatabaseSchema,
     oracleTempSchema = NULL,
     indicationId = indicationId,
-    outputFolder = saveDirectory
+    outputFolder = outputFolder
   )
 
   Legend::createOutcomeCohorts(
@@ -23,7 +23,7 @@ generateAllCohorts <- function(
     cohortDatabaseSchema = cohortDatabaseSchema,
     oracleTempSchema = NULL,
     indicationId = indicationId,
-    outputFolder = saveDirectory
+    outputFolder = outputFolder
   )
 
 }

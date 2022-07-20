@@ -1,8 +1,11 @@
+#' @importFrom magrittr %>%
 #' @export
 execute <- function(
     connectionDetails,
     analysisId,
     databaseSettings,
+    treatmentCohortId = 15,
+    comparatorCohortId = 1,
     oracleTempSchema = NULL,
     balanceThreads = 1,
     negativeControlThreads = 1,
@@ -43,10 +46,10 @@ execute <- function(
   analysisSettings <- RiskStratifiedEstimation::createAnalysisSettings(
     analysisId = analysisId,
     databaseName = databaseSettings$databaseName,
-    treatmentCohortId = 1,
-    comparatorCohortId = 17,
+    treatmentCohortId = treatmentCohortId,
+    comparatorCohortId = comparatorCohortId,
     outcomeIds = outcomeIds,
-    analysisMatrix = matrix(c(rep(rep(1, 9), 3), rep(0, 54)), ncol = 9),
+    analysisMatrix = matrix(c(rep(rep(1, 12), 3), rep(rep(0, 12), 9)), ncol = 12),
     mapTreatments = read.csv(
       system.file(
         "settings",
@@ -55,7 +58,7 @@ execute <- function(
       )
     ),
     mapOutcomes = mapOutcomes,
-    negativeControlOutcomes = negativeControlOutcomes %>% dplyr::pull(conceptId),
+    negativeControlOutcomes = negativeControlOutcomes %>% dplyr::pull(cohortId),
     balanceThreads = balanceThreads,
     negativeControlThreads = negativeControlThreads,
     verbosity = "INFO",
@@ -72,7 +75,7 @@ execute <- function(
   )
 
   covariateSettings <-
-    createGetCovariateSettings(
+    RiskStratifiedEstimation::createGetCovariateSettings(
       covariateSettingsCm =
         FeatureExtraction::createCovariateSettings(
           useDemographicsGender           = TRUE,
@@ -121,8 +124,35 @@ execute <- function(
 
   runSettings <- RiskStratifiedEstimation::createRunSettings(
     runPlpSettings = RiskStratifiedEstimation::createRunPlpSettingsArgs(
-      executeSettings = PatientLevelPrediction::createDefaultExecuteSettings(),
-      matchingSettings = RiskStratifiedEstimation::createMatchOnPsArgs(maxRatio = 1)
+      analyses = list(
+        RiskStratifiedEstimation::createRunPlpAnalysesArgs(
+          outcomeId = 2,
+          modelSettings = PatientLevelPrediction::setLassoLogisticRegression(),
+          matchingSettings = RiskStratifiedEstimation::createMatchOnPsArgs(
+            maxRatio = 1
+          ),
+          executeSettings = PatientLevelPrediction::createDefaultExecuteSettings(),
+          timepoint = 730
+        ),
+        RiskStratifiedEstimation::createRunPlpAnalysesArgs(
+          outcomeId = 18,
+          modelSettings = PatientLevelPrediction::setLassoLogisticRegression(),
+          matchingSettings = RiskStratifiedEstimation::createMatchOnPsArgs(
+            maxRatio = 1
+          ),
+          executeSettings = PatientLevelPrediction::createDefaultExecuteSettings(),
+          timepoint = 730
+        ),
+        RiskStratifiedEstimation::createRunPlpAnalysesArgs(
+          outcomeId = 52,
+          modelSettings = PatientLevelPrediction::setLassoLogisticRegression(),
+          matchingSettings = RiskStratifiedEstimation::createMatchOnPsArgs(
+            maxRatio = 1
+          ),
+          executeSettings = PatientLevelPrediction::createDefaultExecuteSettings(),
+          timepoint = 730
+        )
+      )
     ),
     runCmSettings = RiskStratifiedEstimation::createRunCmSettingsArgs(
       analyses = list(
@@ -134,7 +164,7 @@ execute <- function(
       ),
       psSettings = RiskStratifiedEstimation::createCreatePsArgs(
         control = Cyclops::createControl(
-          threads       = 2,
+          threads       = -1,
           maxIterations = 5e3
         ),
         prior = Cyclops::createPrior(
@@ -152,14 +182,14 @@ execute <- function(
   cohortDatabaseSchema <- databaseSettings$cohortDatabaseSchema
   outputFolder <- analysisSettings$saveDirectory
 
-  generateAllCohorts(
-    connectionDetails = connectionDetails,
-    cdmDatabaseSchema = cdmDatabaseSchema,
-    cohortDatabaseSchema = cohortDatabaseSchema,
-    oracleTempSchema = oracleTempSchema,
-    indicationId = "Hypertension",
-    outputFolder = outputFolder
-  )
+  # generateAllCohorts(
+  #   connectionDetails = connectionDetails,
+  #   cdmDatabaseSchema = cdmDatabaseSchema,
+  #   cohortDatabaseSchema = cohortDatabaseSchema,
+  #   oracleTempSchema = oracleTempSchema,
+  #   indicationId = "Hypertension",
+  #   outputFolder = outputFolder
+  # )
 
   RiskStratifiedEstimation::runRiskStratifiedEstimation(
     connectionDetails = connectionDetails,
